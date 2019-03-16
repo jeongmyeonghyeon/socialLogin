@@ -5,6 +5,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const { JWT_SECRET } = require("./config");
 const User = require("./models/user");
 
+console.log(JWT_SECRET);
+
 passport.use(
     new JwtStrategy(
         {
@@ -25,6 +27,29 @@ passport.use(
             } catch (error) {
                 done(error.false);
             }
+        }
+    )
+);
+
+passport.use(
+    new LocalStrategy(
+        {
+            usernameField: "email"
+        },
+        async (email, password, done) => {
+            // Find the user given the email
+            const user = await User.findOne({ email });
+
+            // If not, handle it
+            if (!user) {
+                return done(null, false);
+            }
+
+            // Check if the password is correct
+
+            // If not, handle it
+
+            // Otherwise, return the user
         }
     )
 );
